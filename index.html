@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Student Result &amp; Grade Calculator</title>
+<script>
+  // Apply saved theme before paint to avoid a flash
+  (function () {
+    try {
+      var t = localStorage.getItem("grade-calc-theme");
+      if (!t) t = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      document.documentElement.setAttribute("data-theme", t);
+    } catch (e) {}
+  })();
+</script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <span class="tag">HTML5 · CSS3 · JavaScript</span>
+      <h1>Student Result &amp; Grade Calculator</h1>
+      <p>Enter a student's marks in five subjects to get the total, percentage, average, grade and pass/fail status instantly.</p>
+    </div>
+    <button class="theme-btn" id="themeToggle" type="button" aria-label="Switch colour theme">
+      <span class="icon" id="themeIcon" aria-hidden="true">☾</span><span id="themeLabel">Dark</span>
+    </button>
+  </header>
+
+  <main class="layout">
+    <section class="card" id="inputCard" aria-labelledby="formTitle">
+      <h2 id="formTitle">Enter marks</h2>
+      <p class="sub">Each subject is out of 100.</p>
+      <form id="gradeForm" novalidate>
+        <div class="field" data-field="name">
+          <label for="studentName">Student name</label>
+          <input id="studentName" type="text" placeholder="e.g. Saksham Patil" autocomplete="off" maxlength="60">
+          <div class="err" role="alert"></div>
+        </div>
+        <div class="marks-grid" id="marksGrid"></div>
+        <div class="actions">
+          <button class="btn primary" type="submit">Calculate result</button>
+          <button class="btn ghost" type="button" id="resetBtn">Reset</button>
+        </div>
+        <p id="formMsg" role="alert" aria-live="polite"></p>
+      </form>
+
+      <div class="rules">
+        <h3>Grading rules</h3>
+        <table>
+          <thead><tr><th>Percentage</th><th>Grade</th><th>Remark</th></tr></thead>
+          <tbody>
+            <tr><td>90 and above</td><td>A+</td><td>Outstanding</td></tr>
+            <tr><td>80 – 89.99</td><td>A</td><td>Excellent</td></tr>
+            <tr><td>70 – 79.99</td><td>B</td><td>Very good</td></tr>
+            <tr><td>60 – 69.99</td><td>C</td><td>Good</td></tr>
+            <tr><td>50 – 59.99</td><td>D</td><td>Satisfactory</td></tr>
+            <tr><td>35 – 49.99</td><td>E</td><td>Needs improvement</td></tr>
+            <tr><td>Below 35 or any subject below 35</td><td>F</td><td>Fail</td></tr>
+          </tbody>
+        </table>
+        <p>To pass, the student must score at least 35 in every subject.</p>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="resTitle" aria-live="polite">
+      <h2 id="resTitle">Result</h2>
+      <p class="sub">Your result card appears here.</p>
+      <div class="empty" id="empty">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16v16H4z"/><path d="M8 9h8M8 13h8M8 17h4"/></svg>
+        <p>Fill in the marks and choose <strong>Calculate result</strong>.</p>
+      </div>
+      <div id="result">
+        <div class="res-head">
+          <div class="ring" id="ring" role="img" aria-label="Percentage"><span id="ringText">0%</span></div>
+          <div>
+            <h3 id="rName">Student</h3>
+            <div>Grade <strong id="rGrade" class="serif" style="font-size:1.4rem">-</strong></div>
+            <span class="badge" id="rStatus">-</span>
+          </div>
+        </div>
+        <div class="stats">
+          <div class="stat"><b id="rTotal">0</b><small>Total / 500</small></div>
+          <div class="stat"><b id="rPct">0</b><small>Percentage</small></div>
+          <div class="stat"><b id="rAvg">0</b><small>Average</small></div>
+          <div class="stat"><b id="rBest">-</b><small>Top subject</small></div>
+        </div>
+        <p class="msg" id="rMsg"></p>
+        <div class="table-scroll">
+          <table class="subj">
+            <thead><tr><th>Subject</th><th>Marks</th><th>Score</th><th>Status</th></tr></thead>
+            <tbody id="subjBody"></tbody>
+          </table>
+        </div>
+        <div class="actions res-actions"><button class="btn ghost" type="button" id="printBtn">Print result</button></div>
+      </div>
+    </section>
+  </main>
+  <footer>Built with plain HTML, CSS and JavaScript. Your theme choice is saved in this browser.</footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
